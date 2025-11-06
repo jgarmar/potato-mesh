@@ -69,3 +69,10 @@ ai_docs/
 
 # Generated credentials for the instance
 web/.config
+
+# Vite build output
+web/dist/
+web/.vite/
+
+# Node modules
+web/node_modules/
