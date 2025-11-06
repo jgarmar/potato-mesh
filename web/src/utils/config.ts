@@ -31,7 +31,7 @@ const DEFAULT_CONFIG: AppConfig = {
     dark: 'grayscale(1) invert(1) brightness(0.9) contrast(1.08)',
   },
   siteName: 'PotatoMesh Demo',
-  privateMod: false,
+  privateMode: false,
   federationEnabled: true,
 };
 

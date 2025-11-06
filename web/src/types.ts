@@ -26,7 +26,7 @@ export interface AppConfig {
   maxDistanceKm: number;
   tileFilters: { light: string; dark: string };
   siteName: string;
-  privateMod: boolean;
+  privateMode: boolean;
   federationEnabled: boolean;
   version?: string;
 }
