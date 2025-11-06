@@ -25,7 +25,7 @@ export default defineConfig({
     assetsDir: 'assets',
     manifest: true,
     rollupOptions: {
-      input: '/src/main.tsx'
+      input: 'src/main.tsx'
     }
   },
   server: {
