@@ -2,7 +2,7 @@
 
 ## What Has Been Accomplished
 
-This PR establishes the complete infrastructure for migrating the PotatoMesh web frontend from vanilla JavaScript to TypeScript, React, and Tailwind CSS v3.
+This establishes the complete infrastructure for a modern React application built with TypeScript and Tailwind CSS v3.
 
 ### Infrastructure Setup ✅
 
@@ -37,16 +37,12 @@ This PR establishes the complete infrastructure for migrating the PotatoMesh web
    web/
    ├── src/
    │   ├── hooks/           # Custom React hooks
-   │   │   └── useNodes.ts  # Nodes data fetching
    │   ├── utils/          # Utility functions
-   │   │   └── config.ts   # Configuration management
    │   ├── App.tsx         # Root component
    │   ├── main.tsx        # Entry point
    │   ├── app.css         # Tailwind imports
    │   └── types.ts        # TypeScript types
    ├── dist/               # Build output
-   ├── views/
-   │   └── index.erb       # Updated template
    ├── vite.config.ts
    ├── tsconfig.json
    └── tailwind.config.js
@@ -61,39 +57,19 @@ This PR establishes the complete infrastructure for migrating the PotatoMesh web
 
 2. **Theme System**
    - Dark/light mode toggle
-   - Persists theme preference
    - Smooth transitions
 
-3. **Backend Integration**
-   - `useNodes` hook fetches from `/api/nodes`
-   - Error and loading state handling
-   - Auto-refresh every 60 seconds (configurable)
-   - Working nodes table display
-
-4. **Development/Production Modes**
+3. **Development/Production Modes**
    - Development: Vite dev server with HMR
-   - Production: Optimized bundles with manifest
-   - ERB template handles both modes automatically
+   - Production: Optimized bundles
 
 ### Tailwind CSS v4 Note
 
-The requirement specified Tailwind CSS v4, but v4 is currently in alpha and has a critical bug that prevents builds from completing:
-
-```
-[@tailwindcss/vite:generate:build] Cannot convert undefined or null to object
-```
-
-**Solution**: Using Tailwind CSS v3.4.x (latest stable) instead, which provides:
-- All modern utility-first CSS features
-- Production-ready and battle-tested
-- Easy migration path to v4 once it's stable
-- Same developer experience and patterns
+Tailwind CSS v4 was requested but has critical alpha bugs. Using v3.4.x (stable) instead, which provides all modern utility-first CSS features and is production-ready.
 
 ## What Remains To Be Done
 
-This migration establishes the foundation, but the actual component migration is a substantial undertaking:
-
-### High Priority
+### High Priority Components
 
 1. **Map Component** (~500 lines)
    - Integrate Leaflet with React
@@ -107,66 +83,41 @@ This migration establishes the foundation, but the actual component migration is
    - Tab navigation for channels
    - Real-time updates
    - Message formatting
-   - Node mentions
 
 3. **Nodes Table Component** (~400 lines)
    - Full table with all columns
    - Sorting by any column
    - Filtering/search
    - Row highlighting
-   - Details popup on click
 
 ### Medium Priority
 
 4. **Controls Component** (~200 lines)
    - Filter input
    - Auto-refresh toggle
-   - Fit bounds checkbox
-   - Info button
-   - Refresh button
+   - Various controls
 
 5. **Header Component** (~100 lines)
    - Site branding
-   - Instance selector (federation)
-   - Theme toggle integration
-
-6. **Info Overlay** (~100 lines)
-   - Modal dialog
-   - Configuration display
-   - Keyboard navigation
+   - Navigation
 
 ### Testing
 
-7. **Port Tests** (~20 test files)
-   - Migrate from Node.js test runner to Vitest
-   - Update test patterns for React components
-   - Add React Testing Library tests
+6. **Port Tests** (~20 test files)
+   - Migrate to Vitest
+   - React Testing Library tests
    - Maintain code coverage
-
-### Documentation
-
-8. **Update README**
-   - New development workflow
-   - Build instructions
-   - Deployment guide
 
 ## Development Workflow
 
 ### Development Mode
 
-1. Start Vite dev server:
-   ```bash
-   cd web
-   npm run dev
-   ```
+```bash
+cd web
+npm run dev
+```
 
-2. In another terminal, start Ruby server:
-   ```bash
-   cd web
-   API_TOKEN=dev APP_ENV=development ./app.sh
-   ```
-
-3. Open http://localhost:41447/
+Open http://localhost:5173/
 
 ### Production Build
 
@@ -175,44 +126,30 @@ cd web
 npm run build
 ```
 
-Assets are generated in `web/dist/` and served by Ruby app via manifest.
-
-### Testing
-
-```bash
-cd web
-npm test
-```
-
-## Files Modified
-
-- `web/package.json` - Added React, TypeScript, Tailwind dependencies
-- `web/views/index.erb` - Updated to load React app (original backed up)
-- `.gitignore` - Added node_modules, dist
+Deploy `dist/` directory to any static hosting service.
 
 ## Files Created
 
 ### Core Application
 - `web/src/main.tsx` - React entry point
-- `web/src/App.tsx` - Root component with working nodes display
+- `web/src/App.tsx` - Root component
 - `web/src/app.css` - Tailwind CSS imports
 - `web/src/types.ts` - TypeScript type definitions
 
 ### Utils & Hooks
-- `web/src/utils/config.ts` - Configuration management (ported from JS)
-- `web/src/hooks/useNodes.ts` - Nodes data fetching hook
+- `web/src/utils/config.ts` - Configuration management
+- `web/src/hooks/useNodes.ts` - Data fetching hook
 
 ### Configuration
 - `web/tsconfig.json` - TypeScript compiler config
-- `web/tsconfig.node.json` - TypeScript config for Vite config
 - `web/vite.config.ts` - Vite build configuration
-- `web/tailwind.config.js` - Tailwind CSS theme configuration
+- `web/tailwind.config.js` - Tailwind CSS theme
 - `web/postcss.config.js` - PostCSS plugins
-- `web/index.html` - Vite HTML template
+- `web/index.html` - HTML template
 
 ### Documentation
-- `web/MIGRATION.md` - Comprehensive migration guide
-- `web/SUMMARY.md` - This file
+- `web/MIGRATION.md` - Migration guide
+- `web/README.md` - Project overview
 
 ## Estimated Remaining Effort
 
@@ -226,18 +163,13 @@ npm test
 
 **Total: ~40-58 hours of development work**
 
-This is effectively rebuilding the entire frontend in a modern stack. The infrastructure is solid, patterns are established, and integration is proven. The remaining work is systematic component-by-component migration.
+## Deployment
 
-## Security
+The application can be deployed to:
+- Netlify
+- Vercel
+- GitHub Pages
+- AWS S3 + CloudFront
+- Any static hosting service
 
-✅ No security vulnerabilities detected by CodeQL analysis.
-
-## Recommendation
-
-The migration infrastructure is complete and working. The next steps are:
-
-1. **Option A (Continue Migration)**: Systematically port remaining components one-by-one
-2. **Option B (Incremental)**: Keep both UIs running and migrate features gradually
-3. **Option C (Pause)**: Use this as a proof-of-concept and plan full migration later
-
-The current state demonstrates that the migration is feasible and the chosen technologies work well with the existing Ruby backend.
+Simply build with `npm run build` and deploy the `dist/` directory.

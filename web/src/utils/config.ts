@@ -35,50 +35,6 @@ const DEFAULT_CONFIG: AppConfig = {
   federationEnabled: true,
 };
 
-export function readAppConfig(): Partial<AppConfig> {
-  const el = document.querySelector('[data-app-config]');
-  if (!el) {
-    return {};
-  }
-  const raw = el.getAttribute('data-app-config') || '';
-  if (!raw) {
-    return {};
-  }
-  try {
-    const parsed = JSON.parse(raw);
-    return typeof parsed === 'object' && parsed !== null ? parsed : {};
-  } catch (err) {
-    console.error('Failed to parse application configuration', err);
-    return {};
-  }
-}
-
-export function mergeConfig(raw: Partial<AppConfig>): AppConfig {
-  const config = { ...DEFAULT_CONFIG, ...(raw || {}) };
-  config.mapCenter = {
-    lat: Number(raw?.mapCenter?.lat ?? DEFAULT_CONFIG.mapCenter.lat),
-    lon: Number(raw?.mapCenter?.lon ?? DEFAULT_CONFIG.mapCenter.lon),
-  };
-  config.tileFilters = {
-    light: raw?.tileFilters?.light || DEFAULT_CONFIG.tileFilters.light,
-    dark: raw?.tileFilters?.dark || DEFAULT_CONFIG.tileFilters.dark,
-  };
-  const refreshIntervalSeconds = Number(
-    raw?.refreshIntervalSeconds ?? DEFAULT_CONFIG.refreshIntervalSeconds
-  );
-  config.refreshIntervalSeconds = Number.isFinite(refreshIntervalSeconds)
-    ? refreshIntervalSeconds
-    : DEFAULT_CONFIG.refreshIntervalSeconds;
-  const refreshMs = Number(raw?.refreshMs ?? config.refreshIntervalSeconds * 1000);
-  config.refreshMs = Number.isFinite(refreshMs) ? refreshMs : DEFAULT_CONFIG.refreshMs;
-  config.chatEnabled = Boolean(raw?.chatEnabled ?? DEFAULT_CONFIG.chatEnabled);
-  config.channel = raw?.channel || DEFAULT_CONFIG.channel;
-  config.frequency = raw?.frequency || DEFAULT_CONFIG.frequency;
-  config.contactLink = raw?.contactLink || DEFAULT_CONFIG.contactLink;
-  config.contactLinkUrl = raw?.contactLinkUrl ?? DEFAULT_CONFIG.contactLinkUrl;
-  const maxDistance = Number(raw?.maxDistanceKm ?? DEFAULT_CONFIG.maxDistanceKm);
-  config.maxDistanceKm = Number.isFinite(maxDistance)
-    ? maxDistance
-    : DEFAULT_CONFIG.maxDistanceKm;
-  return config;
+export function getConfig(): AppConfig {
+  return DEFAULT_CONFIG;
 }

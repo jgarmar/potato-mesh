@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the ongoing migration of the PotatoMesh web frontend from vanilla JavaScript to TypeScript, React, and Tailwind CSS v3.
+This document describes the migration of the PotatoMesh web frontend from vanilla JavaScript to TypeScript, React, and Tailwind CSS v3.
 
 ## Current Status
 
@@ -12,35 +12,31 @@ This document describes the ongoing migration of the PotatoMesh web frontend fro
 - **React Integration**: Installed React 19 and configured with Vite build system
 - **Tailwind CSS v3**: Configured Tailwind CSS v3 with PostCSS (v4 has alpha compatibility issues)
 - **Vite Build System**: Set up Vite for fast development and optimized production builds
-- **Configuration Utilities**: Ported app configuration reading/merging logic to TypeScript
-- **Template Integration**: Updated ERB template to serve React app in both development and production modes
-- **Build Verification**: Confirmed production builds work correctly with manifest generation
+- **Configuration System**: Created configuration management for app settings
+- **Build Verification**: Confirmed production builds work correctly
 
 ### ⏳ In Progress / TODO
 
 - **Component Migration**: Port ~20+ vanilla JS modules to React TypeScript components
 - **CSS Migration**: Convert all custom CSS to Tailwind utility classes
-- **Test Migration**: Port JavaScript tests from Node.js test runner to Vitest
-- **API Integration**: Connect React components to existing Ruby backend APIs
-- **Feature Parity**: Implement all existing features (map, chat, nodes table, filters, etc.)
+- **Test Migration**: Port JavaScript tests to Vitest
+- **Feature Implementation**: Implement all features (map, chat, nodes table, filters, etc.)
 
 ## Architecture
 
+The application is a pure client-side React app built with Vite.
+
 ### Development Mode
 
-In development (`RACK_ENV=development` or `APP_ENV=development`):
 - Vite dev server runs on port 5173
-- ERB template loads scripts from `http://localhost:5173/`
-- Hot module replacement (HMR) enabled for instant updates
+- Hot module replacement (HMR) for instant updates
 - Source maps enabled for debugging
 
 ### Production Mode
 
-In production:
-- Vite builds optimized bundles to `web/dist/`
-- ERB template reads manifest from `web/dist/.vite/manifest.json`
-- Assets served with cache headers from `/dist/` path
-- Code splitting and minification applied
+- Vite builds optimized bundles to `dist/`
+- Code splitting and minification
+- Ready for static hosting
 
 ## Directory Structure
 
@@ -48,7 +44,7 @@ In production:
 web/
 ├── src/                    # TypeScript React source code
 │   ├── components/         # React components (TODO)
-│   ├── hooks/              # Custom React hooks (TODO)
+│   ├── hooks/              # Custom React hooks
 │   ├── utils/              # Utility functions
 │   │   └── config.ts       # App configuration
 │   ├── App.tsx             # Root React component
@@ -56,9 +52,7 @@ web/
 │   ├── app.css             # Tailwind CSS imports
 │   └── types.ts            # TypeScript type definitions
 ├── dist/                   # Build output (gitignored)
-├── public/                 # Static assets (preserved from original)
-├── views/
-│   └── index.erb           # Updated ERB template
+├── public/                 # Static assets
 ├── package.json            # Node dependencies and scripts
 ├── tsconfig.json           # TypeScript configuration
 ├── vite.config.ts          # Vite build configuration
@@ -77,25 +71,17 @@ npm install
 
 ### Running in Development
 
-1. Start Vite dev server:
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
 
-2. In a separate terminal, start Ruby server:
-   ```bash
-   API_TOKEN=dev APP_ENV=development ./app.sh
-   ```
-
-3. Open http://localhost:41447/
+Open http://localhost:5173/
 
 ### Building for Production
 
 ```bash
 npm run build
 ```
-
-This generates optimized assets in `web/dist/`.
 
 ### Running Tests
 
@@ -105,25 +91,17 @@ npm test
 
 ## Tailwind CSS v4 Note
 
-The initial requirement was to use Tailwind CSS v4, but v4 is currently in alpha and has compatibility issues with the Vite plugin (build error: "Cannot convert undefined or null to object"). We're using Tailwind v3.4+ instead, which provides all the modern utility-first CSS features in a production-ready package.
-
-When Tailwind v4 reaches stable release, migration should be straightforward.
+The initial requirement was to use Tailwind CSS v4, but v4 is currently in alpha and has compatibility issues. We're using Tailwind v3.4+ instead, which provides all modern utility-first CSS features in a production-ready package.
 
 ## Migration Strategy
-
-The migration is being done incrementally:
 
 1. ✅ Set up build tooling and infrastructure
 2. ⏳ Create basic React app structure
 3. ⏳ Port core components one-by-one
 4. ⏳ Migrate CSS to Tailwind classes
 5. ⏳ Port tests to Vitest
-6. ⏳ Test and verify all features work
+6. ⏳ Test and verify all features
 
-## Original Files Preserved
+## Original Files
 
-- `web/views/index.erb.backup` - Original ERB template with vanilla JS
-- `web/public/assets/js/` - Original JavaScript modules (for reference during migration)
-- `web/public/assets/styles/` - Original CSS (for reference during migration)
-
-These can be removed once migration is complete and verified.
+Original JavaScript modules are preserved in `public/assets/js/` for reference during migration.

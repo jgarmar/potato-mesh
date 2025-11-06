@@ -1,6 +1,6 @@
 # PotatoMesh Web Frontend
 
-This directory contains the PotatoMesh web application frontend, which is being migrated from vanilla JavaScript to TypeScript + React + Tailwind CSS v3.
+A modern React application for visualizing Meshtastic mesh networks, built with TypeScript and Tailwind CSS.
 
 ## Quick Start
 
@@ -10,13 +10,10 @@ This directory contains the PotatoMesh web application frontend, which is being 
 # Install dependencies
 npm install
 
-# Start Vite dev server (in one terminal)
+# Start Vite dev server
 npm run dev
 
-# Start Ruby backend (in another terminal)
-API_TOKEN=dev APP_ENV=development ./app.sh
-
-# Open http://localhost:41447/
+# Open http://localhost:5173/
 ```
 
 ### Production Build
@@ -25,7 +22,7 @@ API_TOKEN=dev APP_ENV=development ./app.sh
 npm run build
 ```
 
-This generates optimized assets in `dist/` which are served by the Ruby application.
+This generates optimized assets in `dist/` ready for deployment.
 
 ## Project Structure
 
@@ -41,12 +38,10 @@ web/
 │   └── types.ts              # TypeScript types
 ├── dist/                     # Build output (gitignored)
 ├── public/                   # Static assets
-├── views/index.erb           # ERB template (loads React app)
 ├── package.json              # Dependencies and scripts
 ├── vite.config.ts            # Vite configuration
 ├── tsconfig.json             # TypeScript configuration
-├── tailwind.config.js        # Tailwind theme
-└── MIGRATION.md              # Migration documentation
+└── tailwind.config.js        # Tailwind theme
 ```
 
 ## Available Scripts
@@ -58,38 +53,31 @@ web/
 
 ## Migration Status
 
-🚧 **Active Migration in Progress**
+🚧 **Active Development**
 
 - ✅ Infrastructure complete (TypeScript, React, Tailwind, Vite)
-- ✅ API integration working (`useNodes` hook)
+- ✅ API integration ready
 - ✅ Theme system functional
 - ⏳ Component migration (~20 modules remaining)
 
-See `MIGRATION.md` and `SUMMARY.md` for detailed status.
+See `MIGRATION.md` for detailed status.
 
 ## Technologies
 
 - **React 19** - UI framework
 - **TypeScript 5.9** - Type-safe JavaScript
-- **Tailwind CSS v3** - Utility-first CSS (v4 planned after stable release)
+- **Tailwind CSS v3** - Utility-first CSS
 - **Vite 6** - Build tool with HMR
 - **Vitest** - Testing framework
 - **Leaflet** - Map library (to be integrated)
 
-## Backend Integration
+## Deployment
 
-The React app integrates with the Ruby/Sinatra backend:
-- Configuration loaded via ERB template's `data-app-config` attribute
-- API endpoints: `/api/nodes`, `/api/messages`, etc.
-- Development mode proxies to Vite dev server
-- Production mode serves optimized bundles
+After building with `npm run build`, deploy the `dist/` directory to any static hosting service:
+- Netlify
+- Vercel
+- GitHub Pages
+- AWS S3 + CloudFront
+- Any web server (nginx, Apache, etc.)
 
-## Documentation
-
-- `MIGRATION.md` - Migration guide and architecture
-- `SUMMARY.md` - Complete migration summary
-- `../README.md` - Main project README
-
-## Notes
-
-The original vanilla JavaScript implementation is preserved in `public/assets/js/` for reference during migration. Once migration is complete and verified, these can be removed.
+The app is a pure client-side React application with no backend dependencies.
